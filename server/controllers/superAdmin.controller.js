@@ -100,7 +100,7 @@ class SuperAdmin {
     if(deleted){
         return res.status(203).json({
             status: 203,
-            message: `The User is deleted successfully`
+            message: `user is deleted successfully`
         })
     }
 }

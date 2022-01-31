@@ -5,8 +5,8 @@ import User from "../models/db/user.model";
 import Mongoose from "mongoose";
 import sendEmail from "../helpers/sendEmail";
 import jwt from "jsonwebtoken"
-import sgMail from '@sendgrid/mail'
-const _=require('lodash')
+// import sgMail from '@sendgrid/mail'
+
 
 class userController {
     static signup(req,res) {
@@ -158,30 +158,30 @@ class userController {
             return res.status(400).json({error:'Authentication Error'})
         }    
     }            
-    // static update = (req, res, next) => {
-    //     const { names } = req.body;
-    //     const { email} = req.body;
-    //     const { password } = req.body;
-    //     const {authorization } = req.headers;
-    //     const token = authorization.split(' ')[1];
-    //     const decodedToken = jwtDecode(token);
-    //     const {error}= validation.changeStatusValidation(userModel.updateUser(req));
+   
+   static updateProfile(req,res) {
+       const { id } = req.query;
+       const {  names,email }= req.body;
+       const {error}= validation.registerValidation(userModel.createUser(req));
 
-    //     if (error){
-    //         return res.status(400).json({
-    //             message: error.details[0].message.replace(/"/g, ''),
-    //             status: 400
-    //         })
-    //     }
-
-    
-    // };
-    // User.findByIdAndUpdate(id, { status: status }, (err, result) => {
-    //     res.status(201).json({
-    //         message: ' user updated !',
-    //         user: result
-    //     });
-    // });
+        if (error){
+            return res.status(400).json({
+                message: error.details[0].message.replace(/"/g, ''),
+                status: 400
+            })
+        }
+       User.findByIdAndUpdate(id, {
+           names:names,
+           email:email
+       },(err,result)=>{
+           if(result){
+               res.status(201).json({
+                   message:'updated',
+                user:result
+               })
+           }
+       })
+   }
 
 }
 
